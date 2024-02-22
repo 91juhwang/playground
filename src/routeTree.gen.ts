@@ -13,44 +13,54 @@ import { createFileRoute } from '@tanstack/react-router'
 // Import Routes
 
 import { Route as rootRoute } from './routes/__root'
-import { Route as DashboardImport } from './routes/dashboard'
+import { Route as IndexImport } from './routes/index'
 
 // Create Virtual Routes
 
-const AboutLazyImport = createFileRoute('/about')()
-const IndexLazyImport = createFileRoute('/')()
+const ProjectsLazyImport = createFileRoute('/projects')()
+const DashboardLazyImport = createFileRoute('/dashboard')()
+const CalendarLazyImport = createFileRoute('/calendar')()
 
 // Create/Update Routes
 
-const AboutLazyRoute = AboutLazyImport.update({
-  path: '/about',
+const ProjectsLazyRoute = ProjectsLazyImport.update({
+  path: '/projects',
   getParentRoute: () => rootRoute,
-} as any).lazy(() => import('./routes/about.lazy').then((d) => d.Route))
+} as any).lazy(() => import('./routes/projects.lazy').then((d) => d.Route))
 
-const DashboardRoute = DashboardImport.update({
+const DashboardLazyRoute = DashboardLazyImport.update({
   path: '/dashboard',
   getParentRoute: () => rootRoute,
-} as any)
+} as any).lazy(() => import('./routes/dashboard.lazy').then((d) => d.Route))
 
-const IndexLazyRoute = IndexLazyImport.update({
+const CalendarLazyRoute = CalendarLazyImport.update({
+  path: '/calendar',
+  getParentRoute: () => rootRoute,
+} as any).lazy(() => import('./routes/calendar.lazy').then((d) => d.Route))
+
+const IndexRoute = IndexImport.update({
   path: '/',
   getParentRoute: () => rootRoute,
-} as any).lazy(() => import('./routes/index.lazy').then((d) => d.Route))
+} as any)
 
 // Populate the FileRoutesByPath interface
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
     '/': {
-      preLoaderRoute: typeof IndexLazyImport
+      preLoaderRoute: typeof IndexImport
+      parentRoute: typeof rootRoute
+    }
+    '/calendar': {
+      preLoaderRoute: typeof CalendarLazyImport
       parentRoute: typeof rootRoute
     }
     '/dashboard': {
-      preLoaderRoute: typeof DashboardImport
+      preLoaderRoute: typeof DashboardLazyImport
       parentRoute: typeof rootRoute
     }
-    '/about': {
-      preLoaderRoute: typeof AboutLazyImport
+    '/projects': {
+      preLoaderRoute: typeof ProjectsLazyImport
       parentRoute: typeof rootRoute
     }
   }
@@ -59,9 +69,10 @@ declare module '@tanstack/react-router' {
 // Create and export the route tree
 
 export const routeTree = rootRoute.addChildren([
-  IndexLazyRoute,
-  DashboardRoute,
-  AboutLazyRoute,
+  IndexRoute,
+  CalendarLazyRoute,
+  DashboardLazyRoute,
+  ProjectsLazyRoute,
 ])
 
 /* prettier-ignore-end */

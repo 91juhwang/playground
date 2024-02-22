@@ -1,16 +1,23 @@
 import { Fragment } from 'react'
 import { Disclosure, Menu, Transition } from '@headlessui/react'
 import { Bars3Icon, BellIcon, XMarkIcon } from '@heroicons/react/24/outline'
+import { Link } from '@tanstack/react-router'
 
 const navigation = [
-  { name: 'Dashboard', href: '/path1', current: true },
-  { name: 'Team', href: '#', current: false },
-  { name: 'Projects', href: '#', current: false },
-  { name: 'Calendar', href: '#', current: false },
+  { name: 'Home', href: '/', current: true },
+  { name: 'Dashboard', href: '/dashboard', current: false },
+  { name: 'Projects', href: '/projects', current: false },
+  { name: 'Calendar', href: '/calendar', current: false },
 ]
 
 function classNames(...classes: string[]) {
   return classes.filter(Boolean).join(' ')
+}
+
+function handleClick(item: Record<string, string | boolean>) {
+  item.current = true;
+  console.log(navigation)
+  console.log(item)
 }
 
 export default function Example() {
@@ -43,7 +50,7 @@ export default function Example() {
                 <div className="hidden sm:ml-6 sm:block">
                   <div className="flex space-x-4">
                     {navigation.map((item) => (
-                      <a
+                      <Link
                         key={item.name}
                         href={item.href}
                         className={classNames(
@@ -51,9 +58,10 @@ export default function Example() {
                           'rounded-md px-3 py-2 text-sm font-medium'
                         )}
                         aria-current={item.current ? 'page' : undefined}
+                        onClick={() => handleClick(item)}
                       >
                         {item.name}
-                      </a>
+                      </Link>
                     ))}
                   </div>
                 </div>
