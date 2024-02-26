@@ -14,12 +14,6 @@ function classNames(...classes: string[]) {
   return classes.filter(Boolean).join(' ')
 }
 
-function handleClick(item: Record<string, string | boolean>) {
-  item.current = true;
-  console.log(navigation)
-  console.log(item)
-}
-
 export default function Example() {
   return (
     <Disclosure as="nav" className="bg-gray-800">
@@ -57,8 +51,6 @@ export default function Example() {
                           '[&.active]:bg-gray-900 [&.active]:text-white text-gray-300 hover:bg-gray-700 hover:text-white',
                           'rounded-md px-3 py-2 text-sm font-medium'
                         )}
-                        aria-current={item.current ? 'page' : undefined}
-                        onClick={() => handleClick(item)}
                       >
                         {item.name}
                       </Link>

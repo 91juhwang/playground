@@ -8,4 +8,10 @@ export default defineConfig({
     react(),
     TanStackRouterVite()
   ],
+  resolve: {
+    alias: {
+      '@': '/src',
+      '@components': '/src/components',
+    }
+  }
 })
