@@ -11,11 +11,18 @@ declare module '@tanstack/react-router' {
   }
 }
 
+// Start MSW server
+if (process.env.NODE_ENV === 'development') {
+  const { worker } = await import('./mocks/browser');
+  worker.start();
+}
+
 // Create a new router instance
 const router = createRouter({ routeTree })
 
 // Render the app
 const rootElement = document.getElementById('root')!
+
 if (!rootElement.innerHTML) {
   const root = ReactDOM.createRoot(rootElement)
   root.render(
